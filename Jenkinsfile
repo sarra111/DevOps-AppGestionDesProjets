@@ -52,6 +52,25 @@ pipeline {
             }
         }
 
+        stage('SonarQube') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    sh '''
+                        cd backend
+                        ./mvnw sonar:sonar
+                    '''
+                }
+            }
+        }
+
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+
         stage('Package Backend') {
             steps {
                 sh '''
