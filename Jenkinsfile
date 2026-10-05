@@ -57,7 +57,7 @@ pipeline {
                 withSonarQubeEnv('SonarQube') {
                     sh '''
                         cd backend
-                        ./mvnw sonar:sonar
+                        ./mvnw sonar:sonar -Dsonar.token=$SONAR_AUTH_TOKEN
                     '''
                 }
             }
